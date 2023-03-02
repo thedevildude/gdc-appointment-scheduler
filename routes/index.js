@@ -7,8 +7,8 @@ const { User } = require("../models");
 
 router.use("/dashboard", connectEnsureLogin.ensureLoggedIn(), homeRouter);
 
-router.get("/", (request, response) => {
-  response.render("index.ejs");
+router.get("/", async (request, response) => {
+  response.render("index");
 });
 
 // Helping Database Sync link: Should be removed during production
@@ -72,6 +72,7 @@ router.post("/signup", async (request, response) => {
       response.redirect("/dashboard");
     });
   } catch (error) {
+    request.flash("error", error.message);
     if (error.message == "Email is already registered") {
       return response.redirect("/login");
     } else return response.redirect("/signup");
