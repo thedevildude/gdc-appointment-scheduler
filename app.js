@@ -6,6 +6,26 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 var passport = require("passport");
 const router = require("./routes");
+const Sequelize = require("sequelize");
+const process = require("process");
+const env = process.env.NODE_ENV || "development";
+const config = require(__dirname + "/config/config.json")[env];
+
+var SequelizeStore = require("connect-session-sequelize")(session.Store);
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    config
+  );
+}
+var sessionStore = new SequelizeStore({
+  db: sequelize,
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -13,12 +33,14 @@ app.use(cookieParser("gdc-appointment-secret"));
 app.use(
   session({
     secret: "gdc-appointment-secret",
-    /* store: sessionStore, */
+    store: sessionStore,
     cookie: {
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     },
   })
 );
+// Run once to create session store table
+sessionStore.sync();
 
 /* Middleware to remove the trailing "/" from a route */
 app.use((request, response, next) => {
