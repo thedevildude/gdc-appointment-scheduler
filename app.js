@@ -5,6 +5,7 @@ const csurf = require("tiny-csrf");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 var passport = require("passport");
+const router = require("./routes");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -39,22 +40,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 /* Routes */
-app.get("/", (request, response) => {
-  response.render("index.ejs");
-});
-
-app.get("/signup", (request, response) => {
-  response.render("signup", {
-    csrfToken: request.csrfToken(),
-    title: "Sign Up",
-  });
-});
-
-app.get("/login", (request, response) => {
-  response.render("login", {
-    csrfToken: request.csrfToken(),
-    title: "Login",
-  });
-});
+app.use(router);
 
 module.exports = app;
