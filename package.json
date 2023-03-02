@@ -1,0 +1,17 @@
+{
+  "name": "gdc-appointment-scheduler",
+  "version": "1.0.0",
+  "description": "This is a demo appointment scheduler",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "appointment",
+    "appointment",
+    "scheduler",
+    "gdc"
+  ],
+  "author": "Devdeep Ghosh",
+  "license": "ISC"
+}
