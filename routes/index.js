@@ -28,7 +28,7 @@ router.get("/login", (request, response) => {
 homeRouter.get("/", (request, response) => {
   response.render("dashboard", {
     csrfToken: request.csrfToken(),
-    title: "Dashboard"
+    title: "Dashboard",
   });
 });
 

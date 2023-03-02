@@ -5,6 +5,7 @@ const csurf = require("tiny-csrf");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 var passport = require("passport");
+const flash = require("connect-flash");
 const router = require("./routes");
 const Sequelize = require("sequelize");
 const process = require("process");
@@ -55,6 +56,13 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(csurf("this_should_be_32_character_long", ["POST", "PUT", "DELETE"]));
+
+// Connect Flash Implementation
+app.use(flash());
+app.use(function (request, response, next) {
+  response.locals.messages = request.flash();
+  next();
+});
 
 // Import PassportJS config
 require("./config/passport");
