@@ -2,11 +2,10 @@
 module.exports = {
   content: ["./views/*.{html,js,ejs}"],
   theme: {
-    extend: {
-      fontFamily: {
-        poppins: ['Poppins', 'sans-serif'],
-      },
+    fontFamily: {
+      sans: ["Poppins", "sans-serif"]
     },
+    extend: {},
   },
   plugins: [],
 };
