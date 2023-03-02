@@ -25,6 +25,13 @@ router.get("/login", (request, response) => {
   });
 });
 
+homeRouter.get("/", (request, response) => {
+  response.render("dashboard", {
+    csrfToken: request.csrfToken(),
+    title: "Dashboard"
+  });
+});
+
 router.post("/signup", async (request, response) => {
   try {
     if (request.body.password.length < 1) {
