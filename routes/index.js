@@ -11,6 +11,27 @@ router.get("/", (request, response) => {
   response.render("index.ejs");
 });
 
+// Helping Database Sync link: Should be removed during production
+router.get("/sync", async (request, response) => {
+  await User.sync({ alter: true });
+  request.flash("error", "Database Synced");
+  response.redirect("/");
+});
+
+router.get("/reset", async (request, response) => {
+  try {
+    await User.destroy({
+      where: {},
+      truncate: false,
+    });
+    request.flash("error", "All Users cleared");
+    response.redirect("/");
+  } catch (error) {
+    request.flash("error", error.message);
+    response.redirect("/");
+  }
+});
+
 router.get("/signup", (request, response) => {
   response.render("signup", {
     csrfToken: request.csrfToken(),
