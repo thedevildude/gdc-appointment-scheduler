@@ -13,5 +13,8 @@
     "gdc"
   ],
   "author": "Devdeep Ghosh",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.35.0"
+  }
 }
