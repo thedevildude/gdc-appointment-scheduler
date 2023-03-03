@@ -46,6 +46,17 @@ router.get("/login", (request, response) => {
   });
 });
 
+// Sign Out or Log out route
+router.get("/signout", (request, response, next) => {
+  request.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    request.flash("error", "Logged Out Successfully");
+    response.redirect("/");
+  });
+});
+
 homeRouter.get("/", (request, response) => {
   response.render("dashboard", {
     csrfToken: request.csrfToken(),
