@@ -551,6 +551,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
+.bg-orange-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(234 88 12 / var(--tw-bg-opacity));
+}
 .bg-studio-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(208 204 249 / var(--tw-bg-opacity));

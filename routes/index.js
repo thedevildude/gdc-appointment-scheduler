@@ -3,7 +3,7 @@ const homeRouter = require("express").Router({ mergeParams: true });
 var passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
 const { hashPassword } = require("../lib/passwordUtils");
-const { User } = require("../models");
+const { User, Event } = require("../models");
 
 router.use("/dashboard", connectEnsureLogin.ensureLoggedIn(), homeRouter);
 
@@ -14,6 +14,7 @@ router.get("/", async (request, response) => {
 // Helping Database Sync link: Should be removed during production
 router.get("/sync", async (request, response) => {
   await User.sync({ alter: true });
+  await Event.sync({ alter: true });
   request.flash("error", "Database Synced");
   response.redirect("/");
 });
@@ -21,6 +22,10 @@ router.get("/sync", async (request, response) => {
 router.get("/reset", async (request, response) => {
   try {
     await User.destroy({
+      where: {},
+      truncate: false,
+    });
+    await Event.destroy({
       where: {},
       truncate: false,
     });

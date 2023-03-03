@@ -8,6 +8,23 @@
   <title><%=title%></title>
 </head>
 <body>
-  <p>Protected Page</p>
+  <%- include("header", {buttonVisibility:false, signoutVisibility:true})%>
+  <div class="flex flex-col p-10 bg-gray-200">
+    <div>
+      <form class="flex justify-between items-center" action="dashboard/schedule" method="get">
+        <input class="p-5" type="text" placeholder="Contact name" name="event_title">
+        <input class="p-5" type="date" name="event_date">
+        <div class="flex items-center gap-5">
+          <label for="event_start">Event start:</label>
+          <input class="p-5" type="time" name="event_start">
+        </div>
+        <div class="flex items-center gap-5">
+          <label for="event_end">Event end:</label>
+          <input class="p-5" type="time" name="event_end">
+        </div>
+        <button class="bg-orange-600 text-white px-10 py-2 rounded-xl" type="submit">Schedule</button>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
