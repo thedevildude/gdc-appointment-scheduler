@@ -4,7 +4,7 @@ var passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
 const { hashPassword } = require("../lib/passwordUtils");
 const { User, Event } = require("../models");
-const { checkDateTime } = require("./middleware/helpers");
+const { checkDateTime, eventSort, eventSortLater } = require("./middleware/helpers");
 
 router.use("/dashboard", connectEnsureLogin.ensureLoggedIn(), homeRouter);
 
@@ -63,11 +63,27 @@ router.get("/signout", (request, response, next) => {
   });
 });
 
-homeRouter.get("/", (request, response) => {
-  response.render("dashboard", {
-    csrfToken: request.csrfToken(),
-    title: "Dashboard",
-  });
+homeRouter.get("/", async (request, response) => {
+  try {
+    const eventsToday = await Event.getEvents({
+      user_id: request.user.id,
+      event_date: new Date().toISOString().slice(0, 10),
+    });
+    const sortedEventsToday = eventSort(eventsToday);
+    const eventsLater = await Event.getEventsLater({
+      user_id: request.user.id
+    });
+    const sortedEventsLater = eventSortLater(eventsLater);
+    response.render("dashboard", {
+      csrfToken: request.csrfToken(),
+      title: "Dashboard",
+      eventsToday: sortedEventsToday,
+      eventsLater: sortedEventsLater
+    });
+  } catch (error) {
+    request.flash("error", error.message)
+    console.log(error);
+  }
 });
 
 router.post("/signup", async (request, response) => {

@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model, Op
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Event extends Model {
@@ -24,6 +24,28 @@ module.exports = (sequelize, DataTypes) => {
         event_end,
         user_id
       });
+    }
+
+    static async getEvents({ user_id, event_date }) {
+      return this.findAll({
+        where: {
+          user_id,
+          event_date
+        }
+      });
+    }
+
+    static async getEventsLater({ user_id }) {
+      return this.findAll({
+        where: {
+          [Op.and]: {
+            user_id,
+            event_date: {
+              [Op.gt]: new Date().toISOString().slice(0,10)
+            }
+          }
+        }
+      })
     }
   }
   Event.init({

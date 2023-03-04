@@ -10,7 +10,7 @@
 <body>
   <%- include("header", {buttonVisibility:false, signoutVisibility:true})%>
   <div class="flex flex-col m-10 gap-10">
-    <div class="bg-gray-200 p-10">
+    <div class="bg-studio-200 p-10 drop-shadow-xl">
       <form class="flex justify-between items-center" action="dashboard/schedule" method="post">
         <input type="hidden" name="_csrf" value="<%=csrfToken%>">
         <input class="p-5" type="text" placeholder="Event title" name="event_title" required>
@@ -30,11 +30,35 @@
     <div>
       <p class="text-lg">Today's Schedule</p>
       <div class="grid grid-cols-3 gap-5">
-        <div class="flex flex-col drop-shadow-lg bg-white p-5">
-          <p>18:00-20:00</p>
-          <p class="text-xl">Meeting with client XYZ</p>
-          <p class="text-sm text-gray-500">Meeting with client xyz over phone</p>
+        <%for(let i=0;i<eventsToday.length;i++){%>
+        <div class="flex flex-col drop-shadow-xl bg-white p-5 rounded-2xl">
+          <div class="flex text-sm gap-2 text-studio-500">
+            <p><%=eventsToday[i].event_start.slice(0,5)%></p>
+            <p>-</p>
+            <p><%=eventsToday[i].event_end.slice(0,5)%></p>
+          </div>
+          <p class="text-xl"><%=eventsToday[i].event_title%></p>
+          <p class="text-sm text-gray-500"><%=eventsToday[i].event_description%></p>
         </div>
+        <%}%>
+      </div>
+    </div>
+    <div>
+      <p class="text-lg">Scheduled later</p>
+      <div class="grid grid-cols-3 gap-5">
+        <%for(let i=0;i<eventsLater.length;i++){%>
+        <div class="flex flex-col drop-shadow-xl bg-white p-5 rounded-2xl">
+          <div class="flex text-sm gap-2 text-gray-500">
+            <p><%=eventsLater[i].event_start.slice(0,5)%></p>
+            <p>-</p>
+            <p><%=eventsLater[i].event_end.slice(0,5)%></p>
+            <p>|</p>
+            <p><%=eventsLater[i].event_date%></p>
+          </div>
+          <p class="text-xl"><%=eventsLater[i].event_title%></p>
+          <p class="text-sm text-gray-500"><%=eventsLater[i].event_description%></p>
+        </div>
+        <%}%>
       </div>
     </div>
   </div>
