@@ -14,6 +14,17 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "user_id"
       });
     }
+
+    static async scheduleEvent({ event_title, event_description, event_date, event_start, event_end, user_id}) {
+      return this.create({
+        event_title,
+        event_description,
+        event_date,
+        event_start,
+        event_end,
+        user_id
+      });
+    }
   }
   Event.init({
     event_title: DataTypes.STRING,

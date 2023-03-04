@@ -4,6 +4,7 @@ var passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
 const { hashPassword } = require("../lib/passwordUtils");
 const { User, Event } = require("../models");
+const { checkDateTime } = require("./middleware/helpers");
 
 router.use("/dashboard", connectEnsureLogin.ensureLoggedIn(), homeRouter);
 
@@ -105,5 +106,22 @@ router.post(
     response.redirect("/dashboard");
   }
 );
+
+homeRouter.post("/schedule", checkDateTime, async (request, response) => {
+  try {
+    await Event.scheduleEvent({
+      event_title: request.body.event_title,
+      event_description: request.body.event_description,
+      event_date: request.body.event_date,
+      event_start: request.body.event_start,
+      event_end: request.body.event_end,
+      user_id: request.user.id
+    });
+    console.log("Event Scheduled");
+    response.redirect("back")
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 module.exports = router;
