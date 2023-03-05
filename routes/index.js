@@ -4,7 +4,12 @@ var passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
 const { hashPassword } = require("../lib/passwordUtils");
 const { User, Event } = require("../models");
-const { checkDateTime, eventSort, eventSortLater, toIsoString } = require("./middleware/helpers");
+const {
+  checkDateTime,
+  eventSort,
+  eventSortLater,
+  toIsoString,
+} = require("./middleware/helpers");
 
 router.use("/dashboard", connectEnsureLogin.ensureLoggedIn(), homeRouter);
 
@@ -67,22 +72,22 @@ homeRouter.get("/", async (request, response) => {
   try {
     const eventsToday = await Event.getEvents({
       user_id: request.user.id,
-      event_date: toIsoString(new Date()).slice(0, 10)
+      event_date: toIsoString(new Date()).slice(0, 10),
     });
     const sortedEventsToday = eventSort(eventsToday);
     const eventsLater = await Event.getEventsLater({
       user_id: request.user.id,
-      event_date: toIsoString(new Date()).slice(0, 10)
+      event_date: toIsoString(new Date()).slice(0, 10),
     });
     const sortedEventsLater = eventSortLater(eventsLater);
     response.render("dashboard", {
       csrfToken: request.csrfToken(),
       title: "Dashboard",
       eventsToday: sortedEventsToday,
-      eventsLater: sortedEventsLater
+      eventsLater: sortedEventsLater,
     });
   } catch (error) {
-    request.flash("error", error.message)
+    request.flash("error", error.message);
     console.log(error);
   }
 });
@@ -132,12 +137,27 @@ homeRouter.post("/schedule", checkDateTime, async (request, response) => {
       event_date: request.body.event_date,
       event_start: request.body.event_start,
       event_end: request.body.event_end,
-      user_id: request.user.id
+      user_id: request.user.id,
     });
     console.log("Event Scheduled");
-    response.redirect("back")
+    response.redirect("back");
   } catch (error) {
     console.log(error);
+  }
+});
+
+homeRouter.delete("/:id", async (request, response) => {
+  try {
+    await Event.deleteEvent({
+      user_id: request.user.id,
+      id: request.params.id,
+    });
+    console.log(`Event with id ${request.params.id} deleted`);
+    request.flash("success", "Event deleted");
+    response.end();
+  } catch (error) {
+    console.log(error.message);
+    request.flash("error", error.message);
   }
 });
 
