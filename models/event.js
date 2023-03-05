@@ -35,17 +35,17 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
-    static async getEventsLater({ user_id }) {
+    static async getEventsLater({ user_id, event_date }) {
       return this.findAll({
         where: {
           [Op.and]: {
             user_id,
             event_date: {
-              [Op.gt]: new Date().toISOString().slice(0,10)
+              [Op.gt]: event_date
             }
           }
         }
-      })
+      });
     }
   }
   Event.init({
