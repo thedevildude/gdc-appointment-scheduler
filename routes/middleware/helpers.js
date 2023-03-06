@@ -39,7 +39,7 @@ const checkTimeSlot = (events, event_date, event_start, event_end) => {
     if (event_date == events[i].event_date) {
       if (
         event_start === events[i].event_start.slice(0, 5) ||
-        event_end + ":00" === events[i].event_end.slice(0, 5)
+        event_end === events[i].event_end.slice(0, 5)
       ) {
         return false;
       } else if (event_start < events[i].event_start.slice(0, 5) && event_end > events[i].event_start.slice(0, 5)) {
