@@ -79,6 +79,42 @@ module.exports = (sequelize, DataTypes) => {
         }
       });
     }
+
+    static async findOverlap({event_start, event_end, user_id}) {
+      return await this.findAll({
+        where: {
+          user_id,
+          [Op.or]: {
+            [Op.and]: {
+              event_start: {
+                [Op.gt]: event_start
+              },
+              event_end: {
+                [Op.lt]: {
+                  event_end
+                }
+              }
+            },
+            [Op.and]: {
+              event_start: {
+                [Op.lt]: event_start
+              },
+              event_start: {
+                [Op.lt]: this.event_end
+              }
+            },
+            [Op.and]: {
+              event_start: {
+                [Op.gt]: event_start
+              },
+              event_end: {
+                [Op.lt]: event_end
+              }
+            }
+          }
+        }
+      });
+    }
   }
   Event.init(
     {

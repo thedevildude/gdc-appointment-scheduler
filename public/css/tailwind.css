@@ -46,7 +46,6 @@
 .scheduled-event-item:hover {
   background: linear-gradient(90deg, #e5e3fc, transparent) #d0ccf9;
   transition: background-color 500ms;
-  cursor:pointer;
 }
 
 .scheduled-event-item:focus {
