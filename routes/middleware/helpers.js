@@ -22,7 +22,7 @@ const checkDateTime = async (request, response, next) => {
         throw new Error("Time Slot not available");
       }
     } else {
-      throw new Error("You cannot schedule event for old date");
+      throw new Error("You cannot schedule event for old date/time");
     }
   } catch (error) {
     request.flash("error", error.message);
@@ -43,11 +43,11 @@ const checkTimeSlot = (events, event_date, event_start, event_end) => {
       ) {
         return false;
       } else if (event_start + ":00" < events[i].event_start.slice(0, 6)) {
-        if (event_end + ":00" >= events[i].event_start.slice(0, 6)) {
+        if (event_end + ":00" > events[i].event_start.slice(0, 6)) {
           return false;
         } else continue;
       } else if (event_start + ":00" > events[i].event_start.slice(0, 6)) {
-        if (event_start + ":00" <= events[i].event_end.slice(0, 6)) {
+        if (event_start + ":00" < events[i].event_end.slice(0, 6)) {
           return false;
         } else continue;
       }
