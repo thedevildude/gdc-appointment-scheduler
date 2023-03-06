@@ -168,6 +168,7 @@ homeRouter.delete("/:id", async (request, response) => {
     });
     console.log(`Event with id ${request.params.id} deleted`);
     request.flash("success", "Event deleted");
+    console.log(request.originalUrl);
     response.end();
   } catch (error) {
     console.log(error.message);
