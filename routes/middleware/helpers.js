@@ -38,22 +38,15 @@ const checkTimeSlot = (events, event_date, event_start, event_end) => {
   for (let i = 0; i < events.length; i++) {
     if (event_date == events[i].event_date) {
       if (
-        event_start + ":00" === events[i].event_start.slice(0, 5) ||
+        event_start === events[i].event_start.slice(0, 5) ||
         event_end + ":00" === events[i].event_end.slice(0, 5)
       ) {
         return false;
-      } else if (event_start + ":00" < events[i].event_start.slice(0, 6)) {
-        if (event_end + ":00" > events[i].event_start.slice(0, 6)) {
+      } else if (event_start < events[i].event_start.slice(0, 5) && event_end > events[i].event_start.slice(0, 5)) {
+          return false;      
+      } else if (event_start > events[i].event_start.slice(0, 5) && event_start < events[i].event_end.slice(0, 5)) {
           return false;
-        } else continue;
-      } else if (event_start + ":00" > events[i].event_start.slice(0, 6)) {
-        if (event_start + ":00" < events[i].event_end.slice(0, 6)) {
-          return false;
-        } else continue;
-      }
-    } else {
-      // Different date
-      continue;
+      } else continue;
     }
   }
   return true;
