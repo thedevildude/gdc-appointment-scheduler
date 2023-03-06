@@ -736,6 +736,20 @@ video {
   display: block;
 }
 
+.scheduled-event-item {
+  background-color: #fff;
+}
+
+.scheduled-event-item:hover {
+  background: linear-gradient(90deg, #e5e3fc, transparent) #d0ccf9;
+  transition: background-color 500ms;
+  cursor:pointer;
+}
+
+.scheduled-event-item:focus {
+  background-color: #efeffe;
+}
+
 .hover\:scale-125:hover {
   --tw-scale-x: 1.25;
   --tw-scale-y: 1.25;
