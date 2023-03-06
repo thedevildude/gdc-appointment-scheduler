@@ -61,6 +61,24 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
+
+    static async updateTitle({ event_title, user_id, id }) {
+      return this.update({ event_title }, {
+        where: {
+          user_id,
+          id
+        }
+      });
+    }
+
+    static async updateDescription({ event_description, user_id, id }) {
+      return this.update({ event_description }, {
+        where: {
+          user_id,
+          id
+        }
+      });
+    }
   }
   Event.init(
     {

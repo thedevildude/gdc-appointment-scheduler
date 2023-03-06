@@ -92,6 +92,20 @@ homeRouter.get("/", async (request, response) => {
   }
 });
 
+homeRouter.get("/:id", async (request, response) => {
+  const event = await Event.findOne({
+    where: {
+      user_id: request.user.id,
+      id: request.params.id
+    }
+  });
+  response.render("eventEdit", {
+    title: "Edit Event",
+    event,
+    csrfToken: request.csrfToken()
+  });
+});
+
 router.post("/signup", async (request, response) => {
   try {
     if (request.body.password.length < 1) {
@@ -158,6 +172,38 @@ homeRouter.delete("/:id", async (request, response) => {
   } catch (error) {
     console.log(error.message);
     request.flash("error", error.message);
+  }
+});
+
+/* Update Event title */
+homeRouter.post("/:id/title", async (request, response) => {
+  try {
+    await Event.updateTitle({
+      user_id: request.user.id,
+      id: request.params.id,
+      event_title: request.body.event_title
+    });
+    request.flash("success", "Event title updated");
+    response.redirect("/dashboard");
+  } catch (error) {
+    request.flash("error", error.message);
+    response.redirect("/dashboard")
+  }
+});
+
+/* Update Event description */
+homeRouter.post("/:id/description", async (request, response) => {
+  try {
+    await Event.updateDescription({
+      user_id: request.user.id,
+      id: request.params.id,
+      event_description: request.body.event_description
+    });
+    request.flash("success", "Event description updated");
+    response.redirect("/dashboard");
+  } catch (error) {
+    request.flash("error", error.message);
+    response.redirect("/dashboard")
   }
 });
 
